@@ -1,0 +1,20 @@
+sudo: required
+services:
+    -docker
+
+before_install:
+    - docker build -t cmoreno/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+    - docker run -e CI=true cmoreno/react-test npm test
+
+after_success:
+    - docker build -t cmoreno/multi-client ./client
+    - docker build -t cmoreno/multi-nginx ./nginx
+    - docker build -t cmoreno/multi-server ./server
+    - docker build -t cmoreno/multi-worker ./worker
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+    - docker push cmoreno/multi-client
+    - docker push cmoreno/multi-nginx
+    - docker push cmoreno/multi-server
+    - docker push cmoreno/multi-worker
