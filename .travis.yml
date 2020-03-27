@@ -3,18 +3,18 @@ services:
     -docker
 
 before_install:
-    - docker build -t cmoreno/react-test -f ./client/Dockerfile.dev ./client
+    - docker build -t claudiocoder/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-    - docker run -e CI=true cmoreno/react-test npm test
+    - docker run -e CI=true claudiocoder/react-test npm test
 
 after_success:
-    - docker build -t cmoreno/multi-client ./client
-    - docker build -t cmoreno/multi-nginx ./nginx
-    - docker build -t cmoreno/multi-server ./server
-    - docker build -t cmoreno/multi-worker ./worker
+    - docker build -t claudiocoder/multi-client ./client
+    - docker build -t claudiocoder/multi-nginx ./nginx
+    - docker build -t claudiocoder/multi-server ./server
+    - docker build -t claudiocoder/multi-worker ./worker
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
-    - docker push cmoreno/multi-client
-    - docker push cmoreno/multi-nginx
-    - docker push cmoreno/multi-server
-    - docker push cmoreno/multi-worker
+    - docker push claudiocoder/multi-client
+    - docker push claudiocoder/multi-nginx
+    - docker push claudiocoder/multi-server
+    - docker push claudiocoder/multi-worker
